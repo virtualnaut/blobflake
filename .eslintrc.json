@@ -7,7 +7,8 @@
     "plugin:react/recommended",
     "airbnb",
     "prettier",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
+    "plugin:react-hooks/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -32,6 +33,7 @@
         "unnamedComponents": "arrow-function"
       }
     ],
+    "react-hooks/exhaustive-deps": ["error"],
     "import/extensions": [
       "error",
       "ignorePackages",
