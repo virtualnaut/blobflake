@@ -47,14 +47,16 @@ export default {
     squishX: {
       name: 'x-Axis Squish',
       type: { name: 'number' },
-      description: "The number of pixels to offset the blob's valleys by.",
+      description:
+        "The number of pixels to offset the blob's valleys by in the x direction.",
       control: { type: 'range', min: -100, max: 100, step: 1 },
       defaultValue: Blob.defaultProps?.squishX,
     },
     squishY: {
-      name: 'x-Axis Squish',
+      name: 'y-Axis Squish',
       type: { name: 'number' },
-      description: "The number of pixels to offset the blob's valleys by.",
+      description:
+        "The number of pixels to offset the blob's valleys by in the y direction.",
       control: { type: 'range', min: -100, max: 100, step: 1 },
       defaultValue: Blob.defaultProps?.squishY,
     },
@@ -64,6 +66,19 @@ export default {
       description: 'The angle in radians to offset the blob by.',
       control: { type: 'range', min: 0, max: 2 * Math.PI, step: Math.PI / 10 },
       defaultValue: Blob.defaultProps?.rotation,
+    },
+    layers: {
+      name: 'Layers',
+      type: { name: 'number' },
+      description: 'The number of layers that the blob has.',
+      defaultValue: Blob.defaultProps?.layers,
+    },
+    layerGap: {
+      name: 'Layer Gap',
+      type: { name: 'number' },
+      description: 'The distance in pixels between layers',
+      control: { type: 'range', min: 0, max: 50, step: 1 },
+      defaultValue: Blob.defaultProps?.layerGap,
     },
   },
 } as ComponentMeta<typeof Blob>;
