@@ -1,6 +1,11 @@
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import Blob from './Blob';
+
+const degToRad = (deg: number) => (Math.PI / 180) * deg;
+const radToDeg = (rad: number) => (180 / Math.PI) * rad;
 
 export default {
   title: 'Example/Blob',
@@ -64,8 +69,8 @@ export default {
       name: 'Rotation',
       type: { name: 'number' },
       description: 'The angle in radians to offset the blob by.',
-      control: { type: 'range', min: 0, max: 2 * Math.PI, step: Math.PI / 10 },
-      defaultValue: Blob.defaultProps?.rotation,
+      control: { type: 'range', min: 0, max: 360, step: 1 },
+      defaultValue: radToDeg(Blob.defaultProps?.rotation!),
     },
     layers: {
       name: 'Layers',
@@ -80,12 +85,43 @@ export default {
       control: { type: 'range', min: 0, max: 50, step: 1 },
       defaultValue: Blob.defaultProps?.layerGap,
     },
+    linearColourA: {
+      name: 'Colour A',
+      type: { name: 'string' },
+      control: 'color',
+      defaultValue: Blob.defaultProps?.linearColourA,
+    },
+    linearColourB: {
+      name: 'Colour B',
+      type: { name: 'string' },
+      control: 'color',
+      defaultValue: Blob.defaultProps?.linearColourB,
+    },
+    layerOpacity: {
+      name: 'Layer Opacity',
+      type: { name: 'number' },
+      control: { type: 'range', min: 0, max: 1, step: 0.05 },
+      defaultValue: Blob.defaultProps?.layerOpacity!,
+    },
+    linearGradientAngle: {
+      name: 'Linear Gradient Angle',
+      type: { name: 'number' },
+      control: { type: 'range', min: 0, max: 360, step: 1 },
+      defaultValue: radToDeg(Blob.defaultProps?.linearGradientAngle!),
+    },
   },
 } as ComponentMeta<typeof Blob>;
 
-const Template: ComponentStory<typeof Blob> = (args) => (
-  // eslint-disable-next-line react/jsx-props-no-spreading
-  <Blob {...args} />
+const Template: ComponentStory<typeof Blob> = ({
+  rotation,
+  linearGradientAngle,
+  ...args
+}) => (
+  <Blob
+    rotation={degToRad(rotation!)}
+    linearGradientAngle={degToRad(linearGradientAngle!)}
+    {...args}
+  />
 );
 
 export const Trilobe = Template.bind({});
@@ -93,6 +129,7 @@ Trilobe.args = {
   size: 200,
   lobes: 3,
   depth: 50,
+  layers: 3,
 };
 
 export const Octolobe = Template.bind({});
@@ -100,4 +137,19 @@ Octolobe.args = {
   size: 200,
   lobes: 8,
   depth: 20,
+  layers: 5,
+};
+
+export const Squished = Template.bind({});
+Squished.args = {
+  size: 200,
+  lobes: 7,
+  depth: 15,
+  squishX: -10,
+  squishY: 6,
+  layers: 4,
+  layerGap: 10,
+  linearColourA: '#ff00bf',
+  linearColourB: '#ffb000',
+  layerOpacity: 0.3,
 };

@@ -1,3 +1,3 @@
-import HelloWorld from './components/HelloWorld';
+import Blob from './components/Blob';
 
-export default { HelloWorld };
+export default { Blob };

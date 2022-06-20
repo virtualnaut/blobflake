@@ -1,19 +1,19 @@
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
+import { BlobProps } from './Blob.types';
 
-interface BlobProps {
-  lobes: number;
-  size: number;
-  depth: number;
-  sharpness?: number;
-  asymptote?: number;
-  coefficient?: number;
-  squishX?: number;
-  squishY?: number;
-  rotation?: number;
-  layers?: number;
-  layerGap?: number;
-}
+// Fiddled values to get the layers looking nice.
+// These could probably be props but they've been left out to keep it tidier.
 
+/** The larger this number, the more the inner layers will compress up against the edge when the blob is squished. */
+const EDGE_COMPRESSION_FACTOR = 3;
+
+/** The larger this number, the less layer depths will decay as layer number increases. */
+const DEPTH_REDUCTION_FACTOR = 5;
+
+/**
+ * The lowest level of blob. This component exposes all the raw configuration options
+ * for a blob.
+ */
 const Blob: FunctionComponent<BlobProps> = ({
   lobes,
   size,
@@ -26,7 +26,12 @@ const Blob: FunctionComponent<BlobProps> = ({
   rotation,
   layers,
   layerGap,
+  linearColourA,
+  linearColourB,
+  layerOpacity,
+  linearGradientAngle,
 }: BlobProps) => {
+  // Memoise some stuff because I'm too lazy to keep typing it.
   const radius = useMemo(() => size / 2, [size]);
   const points = useMemo(() => lobes * 2, [lobes]);
 
@@ -50,6 +55,9 @@ const Blob: FunctionComponent<BlobProps> = ({
     []
   );
 
+  /**
+   * Makes sure the given angle (radians) obeys 0 <= angle < 360.
+   */
   const normaliseAngle = useCallback(
     (angle: number) => (angle >= 360 ? angle - 360 : angle),
     []
@@ -63,8 +71,8 @@ const Blob: FunctionComponent<BlobProps> = ({
       const pathRadius = radius - shrinkBy;
       const step = (2 * Math.PI) / points;
       const centre: [number, number] = [
-        radius + shrinkBy * ((squishX! / radius) * 3),
-        radius + shrinkBy * ((squishY! / radius) * 3),
+        radius + shrinkBy * ((squishX! / radius) * EDGE_COMPRESSION_FACTOR),
+        radius + shrinkBy * ((squishY! / radius) * EDGE_COMPRESSION_FACTOR),
       ];
 
       const [startX, startY] = coordinatesAt(
@@ -91,7 +99,7 @@ const Blob: FunctionComponent<BlobProps> = ({
           // The current point is a valley, so the next one will be a peak.
           [pointX, pointY] = coordinatesAt(
             theta,
-            pathRadius - (depth - shrinkBy / 5),
+            pathRadius - (depth - shrinkBy / DEPTH_REDUCTION_FACTOR),
             [centre[0] + squishX!, centre[1] + squishY!]
           );
           [nextX, nextY] = coordinatesAt(nextTheta, pathRadius, centre);
@@ -100,7 +108,7 @@ const Blob: FunctionComponent<BlobProps> = ({
           [pointX, pointY] = coordinatesAt(theta, pathRadius, centre);
           [nextX, nextY] = coordinatesAt(
             nextTheta,
-            pathRadius - (depth - shrinkBy / 5),
+            pathRadius - (depth - shrinkBy / DEPTH_REDUCTION_FACTOR),
             [centre[0] + squishX!, centre[1] + squishY!]
           );
         }
@@ -130,14 +138,51 @@ const Blob: FunctionComponent<BlobProps> = ({
     ]
   );
 
+  const [[gradientX1, gradientY1], [gradientX2, gradientY2]] = useMemo(
+    () => [
+      coordinatesAt(normaliseAngle(linearGradientAngle!), radius, [
+        radius,
+        radius,
+      ]),
+      coordinatesAt(normaliseAngle(linearGradientAngle! + Math.PI), radius, [
+        radius,
+        radius,
+      ]),
+    ],
+    [coordinatesAt, normaliseAngle, linearGradientAngle, radius]
+  );
+
   return (
     <svg height={size} width={size}>
+      <defs>
+        <linearGradient
+          id="grad"
+          x1={gradientX1}
+          y1={gradientY1}
+          x2={gradientX2}
+          y2={gradientY2}
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop
+            offset={0}
+            stopColor={linearColourA}
+            stopOpacity={layerOpacity}
+          />
+          <stop
+            offset={1}
+            stopColor={linearColourB}
+            stopOpacity={layerOpacity}
+          />
+        </linearGradient>
+      </defs>
       {Array(layers)
         .fill(0)
         .map((x, i) => (
           <path
             d={generatePathString(i * layerGap!)}
-            fill="rgba(0, 0, 0, 0.1)"
+            style={{
+              fill: `url(#grad)`,
+            }}
           />
         ))}
     </svg>
@@ -152,6 +197,10 @@ Blob.defaultProps = {
   rotation: 0,
   layers: 1,
   layerGap: 10,
+  linearColourA: '#0300ff',
+  linearColourB: '#d900ff',
+  layerOpacity: 0.1,
+  linearGradientAngle: Math.PI / 4,
 };
 
 export default Blob;
