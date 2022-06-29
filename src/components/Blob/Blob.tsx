@@ -1,4 +1,5 @@
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
+import normaliseAngle from '../../helpers/normaliseAngle';
 import { BlobProps } from './Blob.types';
 
 // Fiddled values to get the layers looking nice.
@@ -52,14 +53,6 @@ const Blob: FunctionComponent<BlobProps> = ({
       forRadius * Math.cos(angle) + centre[0],
       forRadius * Math.sin(angle) + centre[1],
     ],
-    []
-  );
-
-  /**
-   * Makes sure the given angle (radians) obeys 0 <= angle < 360.
-   */
-  const normaliseAngle = useCallback(
-    (angle: number) => (angle >= 360 ? angle - 360 : angle),
     []
   );
 
@@ -128,7 +121,6 @@ const Blob: FunctionComponent<BlobProps> = ({
     [
       radius,
       points,
-      normaliseAngle,
       rotation,
       handleOffset,
       coordinatesAt,
@@ -149,7 +141,7 @@ const Blob: FunctionComponent<BlobProps> = ({
         radius,
       ]),
     ],
-    [coordinatesAt, normaliseAngle, linearGradientAngle, radius]
+    [coordinatesAt, linearGradientAngle, radius]
   );
 
   return (
