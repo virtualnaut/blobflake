@@ -9,5 +9,7 @@
     "strict": true,
     "skipLibCheck": true,
     "sourceMap": true
-  }
+  },
+  "exclude": ["dist", "node_modules"],
+  "include": ["src"]
 }
