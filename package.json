@@ -1,16 +1,29 @@
 {
-  "name": "blobflake",
-  "version": "1.0.0",
+  "name": "@virtualnaut/blobflake",
+  "version": "0.1.0",
   "description": "",
-  "main": "src/index.ts",
+  "types": "dist/index.d.ts",
+  "main": "dist/bundle.js",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/@virtualnaut"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/virtualnaut/blobflake.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack --mode development",
+    "production": "webpack --mode production",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/virtualnaut/blobflake/issues"
+  },
+  "homepage": "https://github.com/virtualnaut/blobflake#readme",
   "devDependencies": {
     "@babel/core": "^7.18.5",
     "@storybook/addon-actions": "^6.5.9",
@@ -51,5 +64,9 @@
   "dependencies": {
     "buffer-crc32": "^0.2.13",
     "deepmerge": "^4.2.2"
-  }
+  },
+  "files": [
+    "dist/*",
+    "src/*"
+  ]
 }
