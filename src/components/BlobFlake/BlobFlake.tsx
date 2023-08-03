@@ -49,7 +49,14 @@ const dynamicallyConstrainedAspects = ['depth', 'squishMagnitude'];
  * `linearGradientAngle` - *(number, radians)* the rotation of the colour gradient
  */
 const BlobFlake: FunctionComponent<BlobFlakeProps> = (props) => {
-  const { plainText, size, forcedAspects, aspectRanges } = props;
+  const {
+    plainText,
+    size,
+    forcedAspects,
+    aspectRanges,
+    linearColourA,
+    linearColourB,
+  } = props;
 
   const ranges = useMemo(
     () => propMerge<GeneratableAspectRanges>(defaultRanges, aspectRanges),
@@ -151,6 +158,8 @@ const BlobFlake: FunctionComponent<BlobFlakeProps> = (props) => {
       layerGap={layerGap}
       layerOpacity={aspects.layerOpacity}
       linearGradientAngle={aspects.linearGradientAngle}
+      linearColourA={linearColourA}
+      linearColourB={linearColourB}
     />
   );
 };
