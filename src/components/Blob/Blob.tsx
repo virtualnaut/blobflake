@@ -144,11 +144,13 @@ const Blob: FunctionComponent<BlobProps> = ({
     [coordinatesAt, linearGradientAngle, radius]
   );
 
+  const gradientId = useMemo(() => `grad-${crypto.randomUUID()}`, []);
+
   return (
     <svg height={size} width={size}>
       <defs>
         <linearGradient
-          id="grad"
+          id={gradientId}
           x1={gradientX1}
           y1={gradientY1}
           x2={gradientX2}
@@ -171,9 +173,10 @@ const Blob: FunctionComponent<BlobProps> = ({
         .fill(0)
         .map((x, i) => (
           <path
+            key={crypto.randomUUID()}
             d={generatePathString(i * layerGap!)}
             style={{
-              fill: `url(#grad)`,
+              fill: `url(#${gradientId})`,
             }}
           />
         ))}
