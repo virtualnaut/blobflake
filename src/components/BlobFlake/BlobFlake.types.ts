@@ -35,5 +35,6 @@ export interface BlobFlakeProps {
   linearColourA?: string;
   linearColourB?: string;
   aspectRanges?: Partial<GeneratableAspectRanges>;
-  forcedAspects?: Partial<GeneratableAspects>;
+  clampedAspects?: Partial<GeneratableAspects>;
+  absoluteAspects?: Partial<GeneratableAspects>;
 }

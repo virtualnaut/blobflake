@@ -5,14 +5,17 @@ const useDynamicallyConstrainedAspect = (
   range: [number, number],
   plainText: string,
   basedOn: number,
-  forcedValue?: number
+  absoluteAspect?: number,
+  clampedAspect?: number
 ) => {
   return useMemo(
     () =>
-      forcedValue ??
-      (range[0] + decimalFromString(plainText) * (range[1] - range[0])) *
+      absoluteAspect ??
+      (range[0] +
+        (clampedAspect ?? decimalFromString(plainText)) *
+          (range[1] - range[0])) *
         basedOn,
-    [basedOn, forcedValue, plainText, range]
+    [absoluteAspect, range, clampedAspect, plainText, basedOn]
   );
 };
 

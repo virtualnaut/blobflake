@@ -52,7 +52,8 @@ const BlobFlake: FunctionComponent<BlobFlakeProps> = (props) => {
   const {
     plainText,
     size,
-    forcedAspects,
+    absoluteAspects,
+    clampedAspects,
     aspectRanges,
     linearColourA,
     linearColourB,
@@ -72,22 +73,25 @@ const BlobFlake: FunctionComponent<BlobFlakeProps> = (props) => {
           !dynamicallyConstrainedAspects.includes(aspect)
       )
       .forEach(([aspect, range]: [string, [number, number]]) => {
-        const propValue = forcedAspects?.[aspect as keyof NormalAspects];
+        const absoluteValue = absoluteAspects?.[aspect as keyof NormalAspects];
+        const clampedValue = clampedAspects?.[aspect as keyof NormalAspects];
 
         generated[aspect as keyof NormalAspects] =
-          propValue ??
+          absoluteValue ??
           range[0] +
-            decimalFromString(`${plainText}-${aspect}`) * (range[1] - range[0]);
+            (clampedValue ?? decimalFromString(`${plainText}-${aspect}`)) *
+              (range[1] - range[0]);
       });
 
     return generated as GeneratableAspects;
-  }, [ranges, forcedAspects, plainText]);
+  }, [ranges, absoluteAspects, clampedAspects, plainText]);
 
   const depth = useDynamicallyConstrainedAspect(
     ranges.depth,
     `${plainText}-depth`,
     size / 8,
-    forcedAspects?.depth
+    absoluteAspects?.depth,
+    clampedAspects?.depth
   );
 
   /**
@@ -98,7 +102,8 @@ const BlobFlake: FunctionComponent<BlobFlakeProps> = (props) => {
     ranges.squishMagnitude,
     `${plainText}`,
     depth,
-    forcedAspects?.squishMagnitude
+    absoluteAspects?.squishMagnitude,
+    clampedAspects?.squishMagnitude
   );
 
   const [squishX, squishY] = useMemo(() => {
