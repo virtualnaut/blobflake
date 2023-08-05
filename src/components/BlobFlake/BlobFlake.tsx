@@ -12,6 +12,8 @@ import decimalFromString from '../../helpers/decimalFromString';
 import useDynamicallyConstrainedAspect from '../../hooks/useDynamicallyConstrainedAspect';
 import normaliseAngle from '../../helpers/normaliseAngle';
 
+const BASE_SIZE = 200;
+
 const defaultRanges: GeneratableAspectRanges = {
   lobes: [3, 20],
   depth: [0, 1],
@@ -59,10 +61,20 @@ const BlobFlake: FunctionComponent<BlobFlakeProps> = (props) => {
     linearColourB,
   } = props;
 
-  const ranges = useMemo(
-    () => propMerge<GeneratableAspectRanges>(defaultRanges, aspectRanges),
-    [aspectRanges]
-  );
+  const ranges = useMemo(() => {
+    const mergedRanges = propMerge<GeneratableAspectRanges>(
+      defaultRanges,
+      aspectRanges
+    );
+
+    return {
+      ...mergedRanges,
+      sharpness: [
+        mergedRanges.sharpness[0] - size / BASE_SIZE + 1,
+        mergedRanges.sharpness[1] - size / BASE_SIZE + 1,
+      ] as [number, number],
+    };
+  }, [aspectRanges, size]);
 
   const aspects: NormalAspects = useMemo(() => {
     const generated: Partial<NormalAspects> = {};
