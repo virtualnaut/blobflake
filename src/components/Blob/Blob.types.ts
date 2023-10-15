@@ -12,6 +12,6 @@ export interface BlobProps {
   layerGap?: number;
   linearColourA?: string;
   linearColourB?: string;
-  layerOpacity?: number;
+  opacity?: number;
   linearGradientAngle?: number;
 }

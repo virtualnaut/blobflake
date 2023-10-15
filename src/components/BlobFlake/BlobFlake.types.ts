@@ -10,7 +10,7 @@ export interface NormalAspects {
   rotation: number;
   layers: number;
   layerGap: number;
-  layerOpacity: number;
+  opacity: number;
   linearGradientAngle: number;
 }
 

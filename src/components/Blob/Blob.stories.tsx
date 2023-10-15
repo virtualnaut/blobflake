@@ -97,11 +97,11 @@ export default {
       control: 'color',
       defaultValue: Blob.defaultProps?.linearColourB,
     },
-    layerOpacity: {
-      name: 'Layer Opacity',
+    opacity: {
+      name: 'Opacity',
       type: { name: 'number' },
       control: { type: 'range', min: 0, max: 1, step: 0.05 },
-      defaultValue: Blob.defaultProps?.layerOpacity!,
+      defaultValue: Blob.defaultProps?.opacity!,
     },
     linearGradientAngle: {
       name: 'Linear Gradient Angle',
@@ -151,5 +151,5 @@ Squished.args = {
   layerGap: 10,
   linearColourA: '#ff00bf',
   linearColourB: '#ffb000',
-  layerOpacity: 0.3,
+  opacity: 0.3,
 };
