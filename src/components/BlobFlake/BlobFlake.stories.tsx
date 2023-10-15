@@ -4,8 +4,8 @@ import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import BlobFlake from './BlobFlake';
 
-const degToRad = (deg: number) => (Math.PI / 180) * deg;
-const radToDeg = (rad: number) => (180 / Math.PI) * rad;
+// const degToRad = (deg: number) => (Math.PI / 180) * deg;
+// const radToDeg = (rad: number) => (180 / Math.PI) * rad;
 
 export default {
   title: 'Example/BlobFlake',

@@ -23,7 +23,7 @@ const defaultRanges: GeneratableAspectRanges = {
   rotation: [0, 2 * Math.PI],
   layers: [1, 10],
   layerGap: [0, 0.25],
-  layerOpacity: [0.1, 0.8],
+  opacity: [0.1, 0.8],
   linearGradientAngle: [0, 2 * Math.PI],
 };
 
@@ -46,7 +46,7 @@ const dynamicallyConstrainedAspects = ['depth', 'squishMagnitude'];
  *
  * `layerGap` - *(number, 0-1)* the size of the gap between layers as a fraction of half the width of the blob
  *
- * `layerOpacity` - *(number, 0-1)* the opacity of each layer of the blob
+ * `opacity` - *(number, 0-1)* the opacity of the blob
  *
  * `linearGradientAngle` - *(number, radians)* the rotation of the colour gradient
  */
@@ -173,7 +173,7 @@ const BlobFlake: FunctionComponent<BlobFlakeProps> = (props) => {
       rotation={aspects.rotation}
       layers={truncatedLayers}
       layerGap={layerGap}
-      layerOpacity={aspects.layerOpacity}
+      opacity={aspects.opacity}
       linearGradientAngle={aspects.linearGradientAngle}
       linearColourA={linearColourA}
       linearColourB={linearColourB}

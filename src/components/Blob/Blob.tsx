@@ -29,7 +29,7 @@ const Blob: FunctionComponent<BlobProps> = ({
   layerGap,
   linearColourA,
   linearColourB,
-  layerOpacity,
+  opacity,
   linearGradientAngle,
 }: BlobProps) => {
   // Memoise some stuff because I'm too lazy to keep typing it.
@@ -146,6 +146,8 @@ const Blob: FunctionComponent<BlobProps> = ({
 
   const gradientId = useMemo(() => `grad-${Math.random()}`, []);
 
+  const layerOpacity = useMemo(() => opacity! / layers!, [opacity, layers]);
+
   return (
     <svg height={size} width={size}>
       <defs>
@@ -194,7 +196,7 @@ Blob.defaultProps = {
   layerGap: 10,
   linearColourA: '#0300ff',
   linearColourB: '#d900ff',
-  layerOpacity: 0.1,
+  opacity: 1,
   linearGradientAngle: Math.PI / 4,
 };
 
